@@ -47,36 +47,15 @@ async function uploadFromFs (path) {
 }
 
 async function uploadFromUrl (url) {
-  return new Promise((resolve, reject) => {
-    const urlParts = urlModule.parse(url)
-    const filename = pathModule.parse(url).name
-    const downloadPath = pathModule.join(os.tmpdir(), filename)
-    const req = http.get(url, res => {
-      res.pipe(fs.createWriteStream(downloadPath))
-      if (res.statusCode >= 400) {
-        res.connection.end()
-        switch (res.statusCode) {
-          case 404:
-          return reject(new Error(`noelshack.uploadFromUrl: 404 file not found`))
-          default:
-            return reject(new Error(`noelshack.uploadFromUrl: http error code while downloading (${res.statusCode})`))
-        }
-      }
-      res.on('end', async () => {
-        // file downloaded, let's upload it
-        try {
-          const url = await uploadFromFs(downloadPath)
-          // upload is successful, let's remove local file
-          await promisify(fs.unlink)(downloadPath)
-          resolve(url)
-        } catch (err) {
-          reject(err)
-        }
-      })
-      res.on('error', reject)
-    })
-    req.on('error', reject)
-  })
+  const body = await request(`http://www.noelshack.com/telecharger.json?url=${encodeURIComponent(url)}`, { json: true })
+  if (body.erreurs && body.erreurs !== 'null') {
+    if (locale.has(body.erreurs[0])) {
+      throw new Error(locale.get(body.erreurs[0]))
+    } else {
+      throw new Error(body.erreurs[0])
+    }
+  }
+  return new NoelshackImage(body.chats)
 }
 
 module.exports = {

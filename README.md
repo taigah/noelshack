@@ -1,4 +1,4 @@
-# Noelshack Node.js API 1.0.0
+# Noelshack Node.js API 1.0.2
 
 ## Installation
 
