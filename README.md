@@ -11,7 +11,7 @@ yarn add noelshack
 Upload a local file to noelshack
 
 ```javascript
-const noelshack = require('noelshack)
+const noelshack = require('noelshack')
 
 async function upload () {
   const url = await noelshack.uploadFromFs('path/to/local/image.png')
@@ -28,7 +28,7 @@ upload()
 Upload a distant file to noelshack
 
 ```javascript
-const noelshack = require('noelshack)
+const noelshack = require('noelshack')
 
 async function upload () {
   const url = await noelshack.uploadFromUrl('https://cdn4.iconfinder.com/data/icons/new-google-logo-2015/400/new-google-favicon-128.png')

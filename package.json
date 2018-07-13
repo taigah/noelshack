@@ -1,6 +1,6 @@
 {
   "name": "noelshack",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "noelshack nodejs api",
   "main": "index.js",
   "repository": "https://github.com/taigah/noelshack",
