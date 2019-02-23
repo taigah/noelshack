@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const noelshack = require('./index')
 const arg = process.argv[2]
 
