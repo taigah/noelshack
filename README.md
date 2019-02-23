@@ -6,6 +6,12 @@
 yarn add noelshack
 ```
 
+## CLI
+
+```
+noelshack [url/path]
+```
+
 ## Usage
 
 Upload a local file to noelshack
