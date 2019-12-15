@@ -21,18 +21,11 @@ class NoelshackImage {
   }
 }
 
-async function uploadFromFs (path) {
-  if (!path instanceof String) throw new Error(`noelshack.uploadFromFs: 'path' must be a string`)
-  try {
-    await promisify(fs.access)(path)
-  } catch (err) {
-    throw new Error(`noelshack.uploadFromFs: provided file does not exist (${path}}`)
-  }
-
+async function uploadFromStream (readStream) {
   const body = await request('http://www.noelshack.com/api.php', {
     method: 'POST',
     formData: {
-      fichier: fs.createReadStream(path)
+      fichier: readStream
     }
   })
   // an error has occurred during the upload
@@ -44,6 +37,17 @@ async function uploadFromFs (path) {
     }
   }
   return new NoelshackImage(body)
+}
+
+async function uploadFromFs (path) {
+  if (!path instanceof String) throw new Error(`noelshack.uploadFromFs: 'path' must be a string`)
+  try {
+    await promisify(fs.access)(path)
+  } catch (err) {
+    throw new Error(`noelshack.uploadFromFs: provided file does not exist (${path}}`)
+  }
+
+  return uploadFromStream(fs.createReadStream(path))
 }
 
 async function uploadFromUrl (url) {
@@ -59,6 +63,7 @@ async function uploadFromUrl (url) {
 }
 
 module.exports = {
+  uploadFromStream,
   uploadFromFs,
   uploadFromUrl
 }

@@ -31,6 +31,25 @@ upload()
 })
 ```
 
+or using a stream
+
+```javascript
+const noelshack = require('noelshack')
+const fs = require('fs')
+
+async function upload () {
+  const readStream = fs.createReadStream('path/to/local/image.png')
+  const url = await noelshack.uploadFromStream(readStream)
+  console.log('picture uploaded at', url.direct)
+}
+
+upload()
+.catch(err => {
+  console.error('Whoops an error has occurred')
+  console.error(err)
+})
+```
+
 Upload a distant file to noelshack
 
 ```javascript
